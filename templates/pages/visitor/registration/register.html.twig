@@ -1,0 +1,97 @@
+{% extends "themes/base_visitor.html.twig" %}
+
+{% block title %} - Inscription{% endblock %}
+
+{% block main %}
+    <h1 class="text-center my-3 display-5">Inscription</h1>
+
+    <div class="container my-5">
+        <div class="row">
+            <div class="col-md-8 col-lg-6 mx-auto bg-white shadow p-4">
+                {{ form_start(registrationForm)}}
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="registration_form_firstName">Prénom</label>
+                            <div class="text-danger">{{ form_errors(registrationForm.firstName) }}</div>
+                            {{ form_widget(registrationForm.firstName, {'attr' : {'class': 'form-control'}}) }}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="registration_form_lastName">Nom</label>
+                            <div class="text-danger">{{ form_errors(registrationForm.lastName) }}</div>
+                            {{ form_widget(registrationForm.lastName, {'attr' : {'class': 'form-control'}}) }}
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12 mb-3">
+                            <label for="registration_form_email">Email</label>
+                            <div class="text-danger">{{ form_errors(registrationForm.email) }}</div>
+                            {{ form_widget(registrationForm.email, {'attr' : {'class': 'form-control'}}) }}
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12 mb-3">
+                            <label for="registration_form_password_first">Mot de passe</label>
+                            <div class="text-danger">{{ form_errors(registrationForm.password.first) }}</div>
+                            {{ form_widget(registrationForm.password.first, {'attr' : {'class': 'form-control'}}) }}
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12 mb-3">
+                            <label for="registration_form_password_second">Confirmation du mot de passe</label>
+                            <div class="text-danger">{{ form_errors(registrationForm.password.second) }}</div>
+                            {{ form_widget(registrationForm.password.second, {'attr' : {'class': 'form-control'}}) }}
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12 mb-3">
+                            <div class="text-danger">{{ form_errors(registrationForm.agreeTerms) }}</div>
+                            {{ form_widget(registrationForm.agreeTerms) }}
+                            <label for="registration_form_agreeTerms">Veuillez accepter <a href="#"  data-bs-toggle="modal" data-bs-target="#staticBackdrop"> les conditions générales d'utilisation</a> </label>
+
+                            <!-- Modal -->
+                            <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-scrollable">
+                                <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Les conditions générales d'utilisation</h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Error dicta voluptas dolor ratione delectus? Incidunt asperiores, temporibus ex quod deleniti nulla sunt dolorum, neque dignissimos non debitis velit adipisci sequi?
+                                    Cupiditate aliquam placeat eum, voluptatibus iure veniam alias obcaecati eveniet sit aut a. Dolor molestias illo quas at porro rem saepe similique sint atque, tempore omnis minima aliquam accusamus consectetur.
+                                    Architecto consequatur doloremque voluptates quasi, vitae excepturi ullam, eaque libero reiciendis id quam magni recusandae voluptas cupiditate. Facilis porro, veritatis corrupti quibusdam fuga voluptatem quod voluptates perspiciatis illum quasi animi?
+                                    Porro earum accusamus atque suscipit ducimus sunt ipsum. Iste delectus recusandae vitae sint deserunt error. Dicta vero perferendis ullam minima quae neque unde provident! Dolor iusto soluta delectus repellendus similique.
+                                    Vitae voluptatibus quidem minima dignissimos earum quod, libero asperiores beatae praesentium sed ullam quisquam, quas rerum molestiae tenetur possimus esse. Quidem voluptatem perferendis porro doloribus minima asperiores quis at repellendus.
+                                    Quasi facilis amet ut asperiores culpa corrupti animi accusantium quia consequuntur atque! Eum, rem, dolor ipsam commodi ut ea cum laudantium nulla porro doloribus sit perferendis, delectus molestiae tempore rerum.
+                                    Quibusdam adipisci dolores suscipit minima, sapiente enim reprehenderit esse mollitia perspiciatis nemo laudantium aut, qui debitis expedita nisi est aspernatur! Dolorum voluptas voluptatem, vel velit tenetur non error vero modi.
+                                    Modi consectetur distinctio, est at optio ad laborum temporibus eum ducimus earum reiciendis vero possimus tempore eligendi minus deserunt accusamus dicta architecto quaerat praesentium, dolorem odio officiis doloremque culpa. Assumenda?
+                                    Natus placeat similique quibusdam. Nisi quasi, amet quidem eligendi beatae esse omnis dicta possimus hic, cumque doloribus autem ipsa explicabo aliquam ab voluptas quod, nostrum eaque labore facere iure. Corporis.
+                                    Excepturi atque numquam magni culpa tempore, consectetur aut cumque quos, alias delectus quod. Aliquid molestias nobis eaque fuga ratione odio sequi repellat architecto dignissimos accusantium, nisi vitae, est, expedita perspiciatis.
+                                    Rem voluptatum, deleniti earum consequuntur architecto vitae, cupiditate molestias veniam quod unde molestiae minus exercitationem at mollitia nisi, eius consectetur dicta modi maxime et enim. Numquam, cum voluptate. Cumque, amet!
+                                    Ipsam amet quo molestias iste eum ex corporis enim obcaecati debitis nisi? Quisquam placeat cupiditate earum velit libero eos similique incidunt distinctio, harum tenetur reiciendis repudiandae reprehenderit eveniet voluptates consequatur!
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                                </div>
+                                </div>
+                            </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12">
+                            <input type="submit" class="btn btn-primary" formnovalidate></input>
+                        </div>
+                    </div>
+                {{ form_end(registrationForm)}}
+            </div>
+        </div>
+    </div>
+{% endblock %}
