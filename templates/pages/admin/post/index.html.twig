@@ -1,0 +1,16 @@
+{% extends "themes/base_admin.html.twig" %}
+
+{% block title %} - Liste des articles{% endblock %}
+
+{% block font_awesome %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+{% endblock %}
+
+{% block main %}
+    <h1 class="text-center my-3 display-5">Listes des articles</h1>
+    
+    <div class="d-flex justify-content-end align-content-center my-3">
+        <a href="{{ path('admin.post.create' )}}" class="btn btn-primary"><i class="fa-solid fa-plus"></i> Nouvel article</a>
+    </div>
+
+{% endblock %}
