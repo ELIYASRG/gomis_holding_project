@@ -2,6 +2,44 @@
 
 {% block title %} - Nouvel article{% endblock %}
 
+{% block tiny %}
+    <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+    <script>
+        tinymce.init({
+            selector: 'textarea#post_form_description'
+        });
+    </script>
+{% endblock %}
+
 {% block main %}
     <h1 class="text-center my-3 display-5">Ajout d'un article</h1>
+
+    <div></div>
+    <div class="container mt-5">
+        {{ form_start(form) }}
+            <div class="mb-3">
+                <label>Nom</label>
+                <div class="text-danger">{{ form_errors(form.name) }}</div>
+                {{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
+            </div>
+            <div class="mb-3">
+                <label>Catégorie</label>
+                <div class="text-danger">{{ form_errors(form.category) }}</div>
+                {{ form_widget(form.category, {'attr': {'class': 'form-control'}}) }}
+            </div>
+            <div class="mb-3">
+                <label>Image(s)</label>
+                <div class="text-danger">{{ form_errors(form.images) }}</div>
+                {{ form_widget(form.images, {'attr': {'class': 'form-control'}}) }}
+            </div>
+            <div class="mb-3">
+                <label>Description</label>
+                <div class="text-danger">{{ form_errors(form.description) }}</div>
+                {{ form_widget(form.description, {'attr': {'class': 'form-control', 'rows': 10}}) }}
+            </div>
+            <div class="mb-3">
+                <input type="submit" class="btn btn-primary" value="sauvegarder" formnovalidate/>
+            </div>
+        {{ form_end(form) }}
+    </div>
 {% endblock %}

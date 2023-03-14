@@ -29,7 +29,7 @@
 
 
         {# Font awesome #}
-        {% block font_awesome %}{% endblock %}
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
         {# Chargement de la font family #}
 
@@ -37,10 +37,6 @@
 
         {# Jquery #}
         {% block jquery %}{% endblock %}
-
-
-        {# Tiny #}
-        {% block tiny %}{% endblock %}
 
 
         {# Datatables #}
@@ -58,6 +54,10 @@
         {% block encore_js %}
             {{ encore_entry_script_tags('app') }}
         {% endblock %}
+
+
+        {# Tiny #}
+        {% block tiny %}{% endblock %}
 
 
         <link rel="stylesheet" href="{{ asset('admin_css/admin.css') }}">

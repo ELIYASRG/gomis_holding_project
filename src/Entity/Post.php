@@ -3,8 +3,13 @@
 namespace App\Entity;
 
 use App\Repository\PostRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+
+use Symfony\Component\Validator\Constraints as Assert;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 #[ORM\Entity(repositoryClass: PostRepository::class)]
 class Post
@@ -14,36 +19,84 @@ class Post
     #[ORM\Column]
     private ?int $id = null;
 
+
+
+
+    #[Assert\NotBlank(
+        message: "Le nom est obligatoire."
+    )]
+    #[Assert\Length(
+        max: 255,
+        maxMessage: "Le nom doit contenir au maximum {{ limit }} caractères.",
+    )]
     #[ORM\Column(length: 255, unique: true)]
     private ?string $name = null;
+
+
 
     #[Gedmo\Slug(fields: ['name'])]
     #[ORM\Column(length: 255, unique: true)]
     private ?string $slug = null;
+    
 
+
+
+    #[Assert\NotBlank(
+        message: "La catégorie est obligatoire."
+    )]
+    #[Assert\Type(
+        type: Category::class,
+        message: 'veuillez entrer une catégorie valide.',
+    )]
     #[ORM\ManyToOne(inversedBy: 'posts')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Category $category = null;
+    
+
+
 
     #[ORM\ManyToOne(inversedBy: 'posts')]
     private ?User $user = null;
+    
 
+
+
+    #[Assert\NotBlank(
+        message: "La description est obligatoire."
+    )]
     #[ORM\Column(type: Types::TEXT)]
-    private ?string $content = null;
+    private ?string $description = null;
+    
+
+
+
 
     #[ORM\Column(options: ['default' => false] )]
     private ?bool $isPublished = null;
-
+    
+    #[Gedmo\Timestampable(on: 'create')]
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $createdAt = null;
-
+    
+    #[Gedmo\Timestampable(on: 'update')]
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $updatedAt = null;
 
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $publishedAt = null;
+    
 
 
+
+    
+    #[ORM\OneToMany(mappedBy: 'article', targetEntity: Image::class, orphanRemoval: true)]
+    private Collection $images;
+
+    public function __construct()
+    {
+        $this->isPublished = false;
+        $this->images = new ArrayCollection();
+    }
 
     
     public function getId(): ?int
@@ -99,14 +152,14 @@ class Post
         return $this;
     }
 
-    public function getContent(): ?string
+    public function getDescription(): ?string
     {
-        return $this->content;
+        return $this->description;
     }
 
-    public function setContent(string $content): self
+    public function setDescription(string $description): self
     {
-        $this->content = $content;
+        $this->description = $description;
 
         return $this;
     }
@@ -155,6 +208,38 @@ class Post
     public function setPublishedAt(?\DateTimeImmutable $publishedAt): self
     {
         $this->publishedAt = $publishedAt;
+
+        return $this;
+    }
+
+    
+
+    /**
+     * @return Collection<int, Image>
+     */
+    public function getImages(): Collection
+    {
+        return $this->images;
+    }
+
+    public function addImage(Image $image): self
+    {
+        if (!$this->images->contains($image)) {
+            $this->images->add($image);
+            $image->setArticle($this);
+        }
+
+        return $this;
+    }
+
+    public function removeImage(Image $image): self
+    {
+        if ($this->images->removeElement($image)) {
+            // set the owning side to null (unless already changed)
+            if ($image->getArticle() === $this) {
+                $image->setArticle(null);
+            }
+        }
 
         return $this;
     }
