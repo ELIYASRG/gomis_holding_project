@@ -7,19 +7,19 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\HttpFoundation\File\File;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 #[ORM\Entity(repositoryClass: PostRepository::class)]
+#[Vich\Uploadable]
 class Post
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
-
-
 
 
     #[Assert\NotBlank(
@@ -86,16 +86,31 @@ class Post
     private ?\DateTimeImmutable $publishedAt = null;
     
 
+    #[Assert\File(
+        maxSize: '2048k',
+        mimeTypes: ['image/jpeg', 'image/png', 'image/webp', 'image/bmp'],
+        mimeTypesMessage: "Seuls ces formats d'images sont autorisés : jpeg, jpg, png, webp, bmp",
+    )]
+    // NOTE: This is not a mapped field of entity metadata, just a simple property.
+    #[Vich\UploadableField(mapping: 'image_post', fileNameProperty: 'image')]
+    private ?File $imageFile = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $image = null;
+
+    #[ORM\ManyToMany(targetEntity: Tag::class, inversedBy: 'posts')]
+    private Collection $tags;
 
 
     
-    #[ORM\OneToMany(mappedBy: 'article', targetEntity: Image::class, orphanRemoval: true)]
-    private Collection $images;
+    // #[ORM\OneToMany(mappedBy: 'article', targetEntity: Image::class, orphanRemoval: true)]
+    // private Collection $images;
 
     public function __construct()
     {
         $this->isPublished = false;
-        $this->images = new ArrayCollection();
+        // $this->images = new ArrayCollection();
+        $this->tags = new ArrayCollection();
     }
 
     
@@ -212,34 +227,95 @@ class Post
         return $this;
     }
 
-    
-
-    /**
-     * @return Collection<int, Image>
+            /**
+     * If manually uploading a file (i.e. not using Symfony Form) ensure an instance
+     * of 'UploadedFile' is injected into this setter to trigger the update. If this
+     * bundle's configuration parameter 'inject_on_load' is set to 'true' this setter
+     * must be able to accept an instance of 'File' as the bundle will inject one here
+     * during Doctrine hydration.
+     *
+     * @param File|\Symfony\Component\HttpFoundation\File\UploadedFile|null $imageFile
      */
-    public function getImages(): Collection
+    public function setImageFile(?File $imageFile = null): void
     {
-        return $this->images;
+        $this->imageFile = $imageFile;
+
+        if (null !== $imageFile) {
+            // It is required that at least one field changes if you are using doctrine
+            // otherwise the event listeners won't be called and the file is lost
+            $this->updatedAt = new \DateTimeImmutable();
+        }
     }
 
-    public function addImage(Image $image): self
+    public function getImageFile(): ?File
     {
-        if (!$this->images->contains($image)) {
-            $this->images->add($image);
-            $image->setArticle($this);
+        return $this->imageFile;
+    }
+
+
+
+    // /**
+    //  * @return Collection<int, Image>
+    //  */
+    // public function getImages(): Collection
+    // {
+    //     return $this->images;
+    // }
+
+    // public function addImage(Image $image): self
+    // {
+    //     if (!$this->images->contains($image)) {
+    //         $this->images->add($image);
+    //         $image->setArticle($this);
+    //     }
+
+    //     return $this;
+    // }
+
+    // public function removeImage(Image $image): self
+    // {
+    //     if ($this->images->removeElement($image)) {
+    //         // set the owning side to null (unless already changed)
+    //         if ($image->getArticle() === $this) {
+    //             $image->setArticle(null);
+    //         }
+    //     }
+
+    //     return $this;
+    // }
+
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    public function setImage(?string $image): self
+    {
+        $this->image = $image;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Tag>
+     */
+    public function getTags(): Collection
+    {
+        return $this->tags;
+    }
+
+    public function addTag(Tag $tag): self
+    {
+        if (!$this->tags->contains($tag)) {
+            $this->tags->add($tag);
         }
 
         return $this;
     }
 
-    public function removeImage(Image $image): self
+    public function removeTag(Tag $tag): self
     {
-        if ($this->images->removeElement($image)) {
-            // set the owning side to null (unless already changed)
-            if ($image->getArticle() === $this) {
-                $image->setArticle(null);
-            }
-        }
+        $this->tags->removeElement($tag);
 
         return $this;
     }

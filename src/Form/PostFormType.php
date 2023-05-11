@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use App\Entity\Tag;
 use App\Entity\Post;
 use App\Entity\Category;
 use App\Form\ImageFormType;
@@ -34,15 +35,33 @@ class PostFormType extends AbstractType
                 // 'expanded' => true,
             ])
             ->add('description', TextareaType::class)
-            ->add('images' , CollectionType::class, [
-                'entry_type' => ImageFormType::class,
-                'allow_add' => true,
-                'allow_delete' => true,
-                'required' => false,
-                'label'=>false,
-                'by_reference' => false,
-                'disabled' => false,
-            ]);
+            ->add('tags', EntityType::class, [
+                // looks for choices from this entity
+                'class' => Tag::class,
+            
+                // uses the User.username property as the visible option string
+                'choice_label' => 'name',
+
+                
+                'placeholder' => 'Choisissez un tag',
+                
+                // used to render a select box, check boxes or radios
+                'multiple' => true,
+                // 'expanded' => true,
+            ])
+            ->add('description', TextareaType::class)
+            ->add('imageFile', VichImageType::class)
+            // ->add('images' , CollectionType::class, [
+            //     'entry_type' => ImageFormType::class,
+            //     'allow_add' => true,
+            //     'allow_delete' => true,
+            //     'prototype' => true
+            //     // 'required' => false,
+            //     // 'label'=>false,
+            //     // 'by_reference' => false,
+            //     // 'disabled' => false,
+            // ])
+            ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void

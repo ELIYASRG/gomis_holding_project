@@ -2,6 +2,32 @@
 
 {% block title %} - Nouvel article{% endblock %}
 
+{# {% block jquery %}
+    <script src="https://code.jquery.com/jquery-3.6.4.js" integrity="sha256-a9jBBRygX1Bh5lt8GZjXDzyOB+bWve9EiO7tROUtj/E=" crossorigin="anonymous"></script>
+    <script>
+        $('.add-another-collection-widget').click(function (e) {
+            var list = $($(this).attr('data-list-selector'));
+            // Try to find the counter of the list or use the length of the list
+            var counter = list.data('widget-counter') | list.children().length;
+
+            // grab the prototype template
+            var newWidget = list.attr('data-prototype');
+            // replace the "__name__" used in the id and name of the prototype
+            // with a number that's unique to your emails
+            // end name attribute looks like name="contact[emails][2]"
+            newWidget = newWidget.replace(/__name__/g, counter);
+            // Increase the counter
+            counter++;
+            // And store it, the length cannot be used if deleting widgets is allowed
+            list.data('widget-counter', counter);
+
+            // create a new list element and add it to the list
+            var newElem = $(list.attr('data-widget-tags')).html(newWidget);
+            newElem.appendTo(list);
+        });
+    </script>
+{% endblock %} #}
+
 {% block tiny %}
     <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
     <script>
@@ -28,9 +54,27 @@
                 {{ form_widget(form.category, {'attr': {'class': 'form-control'}}) }}
             </div>
             <div class="mb-3">
+                <label>Tags</label>
+                <div class="text-danger">{{ form_errors(form.tags) }}</div>
+                {{ form_widget(form.tags, {'attr': {'class': 'form-control'}}) }}
+            </div>
+            <div class="mb-3">
                 <label>Image(s)</label>
-                <div class="text-danger">{{ form_errors(form.images) }}</div>
-                {{ form_widget(form.images, {'attr': {'class': 'form-control'}}) }}
+                <div class="text-danger">{{ form_errors(form.imageFile) }}</div>
+                {{ form_widget(form.imageFile, {'attr': {'class': 'form-control'}}) }}
+                    {# <ul id="images-fields-list"
+                        data-prototype="{{ form_widget(form.images)|e }}"
+                        data-widget-tags="{{ '<li></li>'|e }}"
+                        data-widget-counter="{{ value|length }}">
+                        {% for key,ImageFormType in form.children %}
+                            {{ form_widget(ImageFormType) }}
+
+                        {% endfor %}
+                    </ul>
+
+                    <button type="button"
+                            class="add-another-collection-widget"
+                            data-list-selector="#images-fields-list">Ajouter une image</button> #}
             </div>
             <div class="mb-3">
                 <label>Description</label>

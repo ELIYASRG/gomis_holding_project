@@ -2,30 +2,24 @@
 
 namespace App\Form;
 
-use App\Entity\Image;
+use App\Entity\Tag;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Vich\UploaderBundle\Form\Type\VichImageType;
 
-class ImageFormType extends AbstractType
+class TagFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('imageFile', VichImageType::class, [
-                'required' => false,
-                'download_uri' => true,
-                'image_uri' => true
-            ]);
+            ->add('name')
         ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Image::class,
-            // "allow_extra_fields" => true,
+            'data_class' => Tag::class,
         ]);
     }
 }

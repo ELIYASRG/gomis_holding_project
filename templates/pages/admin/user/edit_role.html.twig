@@ -1,0 +1,26 @@
+{% extends "themes/base_admin.html.twig" %}
+
+{% block title %}
+    Modification du rôle de : {{ user.firstName }} {{ user.lastName }}
+{% endblock %}
+
+{% block main %}
+    <h1 class="display-5 text-center my-3">Modification du rôle de : {{ user.firstName }} {{ user.lastName }}</h1>
+
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-9 col_lg_7 mx-auto shadow p-4">
+                {{ form_start(form) }}
+                    <div class="mb-3">
+                        <label>Les rôles</label>
+                        <div class="text-danger">{{ form_errors(form.roles)}}</div>
+                        {{ form_widget(form.roles, {'attr' : {'class' : 'form-control'}}) }}
+                    </div>
+                    <div class="mb-3">
+                        <input type="submit" class="btn btn-primary" value="modifier"/>
+                    </div>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}
