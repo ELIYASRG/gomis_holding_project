@@ -64,8 +64,10 @@ class RegistrationController extends AbstractController
                     "expires_at" => $user->getExpiresAt()->format('d/m/Y H:i:s'),
                 ]
             ]);
+            
+            $this->addFlash('success', 'Vérifiez votre boite mail, un lien de confirmation vous a été envoyé !');
 
-            return $this->redirectToRoute('visitor.welcome.index');
+            return $this->redirectToRoute('visitor.authentication.login');
         }
 
         return $this->render('pages/visitor/registration/register.html.twig', [
